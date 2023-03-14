@@ -1,4 +1,5 @@
 const MouthCell = require("./MouthCell");
+const MeatMouthCell = require("./MeatMouthCell");
 const ProducerCell = require("./ProducerCell");
 const MoverCell = require("./MoverCell");
 const KillerCell = require("./KillerCell");
@@ -11,6 +12,7 @@ const BodyCellFactory = {
     init: function() {
         var type_map = {};
         type_map[CellStates.mouth.name] = MouthCell;
+        type_map[CellStates.meatMouth.name] = MeatMouthCell;
         type_map[CellStates.producer.name] = ProducerCell;
         type_map[CellStates.mover.name] = MoverCell;
         type_map[CellStates.killer.name] = KillerCell;

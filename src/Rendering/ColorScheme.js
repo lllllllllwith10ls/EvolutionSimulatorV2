@@ -3,8 +3,10 @@ const CellStates = require("../Organism/Cell/CellStates");
 var color_scheme = {
     "empty":"#0E1318",
     "food":"#2F7AB7",
+    "meat":"#C22915",
     "wall":"gray",
     "mouth":"#DEB14D",
+    "meatMouth":"#DE634D",
     "producer":"#15DE59",
     "mover":"#60D4FF",
     "killer":"#F82380",

@@ -52,12 +52,14 @@
 						<p>Each organism is made up of different colored cells. Hover over each color to learn what it does.</p>
 						<div id='cell-legend'>
 							<div class='cell-legend-type' id='mouth' title="Mouth: Eats adjacent food."></div>
+							<div class='cell-legend-type' id='meatMouth' title="Meat Mouth: Eats adjacent meat."></div>
 							<div class='cell-legend-type' id='producer' title="Producer: Produces adjacent food."></div>
 							<div class='cell-legend-type' id='mover' title="Mover: Allows for movement and rotation."></div>
 							<div class='cell-legend-type' id='killer' title="Killer: Harms organisms in adjacent cells."></div>
 							<div class='cell-legend-type' id='armor' title="Armor: Negates affects of killer cell."></div>
 							<div class='cell-legend-type' id='eye' title="Eye: Observes cells and decides movement."></div>
 							<div class='cell-legend-type' id='food' title="Food: Not part of an organism. Once an organism has eaten enough food, it will reproduce."></div>
+							<div class='cell-legend-type' id='meat' title="Meat: Not part of an organism. Produced once an organism dies. Can be eaten by meat mouths."></div>
 							<div class='cell-legend-type' id='wall' title="Wall: Not part of an organism. Blocks movement and reproduction."></div>
 						</div><br>
 					</div>
@@ -87,6 +89,7 @@
 						<div id='cell-selections'>
 							<div style='grid-column: 1;'>
 								<div class='cell-type' id='mouth' title="Mouth: Eats adjacent food."></div>
+								<div class='cell-type' id='meatMouth' title="Meat Mouth: Eats adjacent meat."></div>
 								<div class='cell-type' id='producer' title="Producer: Produces adjacent food."></div>
 								<div class='cell-type' id='mover' title="Mover: Allows for movement and rotation."></div>
 							</div>
@@ -134,7 +137,9 @@
 								<label for="observation-type-edit">Observation: </label>
 								<select name="observation-type-edit" id="observation-type-edit">
 									<option value="food">food</option>
+									<option value="meat">meat</option>
 									<option value="mouth">mouth</option>
+									<option value="meatMouth">meat mouth</option>
 									<option value="producer">producer</option>
 									<option value="mover">mover</option>
 									<option value="killer">killer</option>

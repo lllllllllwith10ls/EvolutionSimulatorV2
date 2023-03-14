@@ -85,12 +85,15 @@ class GridMap {
         // list is loaded. This reduces filesize and complexity.
         let grid = {cols:this.cols, rows:this.rows};
         grid.food = [];
+        grid.meat = [];
         grid.walls = [];
         for (let col of this.grid) {
             for (let cell of col) {
                 if (cell.state===CellStates.wall || cell.state===CellStates.food){
                     let c = {c: cell.col, r: cell.row}; // no need to store state
                     if (cell.state===CellStates.food)
+                        grid.food.push(c)
+                    else if (cell.state===CellStates.meat)
                         grid.food.push(c)
                     else
                         grid.walls.push(c)
@@ -103,6 +106,8 @@ class GridMap {
     loadRaw(grid) {
         for (let f of grid.food)
             this.setCellType(f.c, f.r, CellStates.food);
+        for (let m of grid.meat)
+            this.setCellType(m.c, m.r, CellStates.meat);
         for (let w of grid.walls)
             this.setCellType(w.c, w.r, CellStates.wall);
     }

@@ -14,6 +14,7 @@ class Organism {
         this.env = env;
         this.lifetime = 0;
         this.food_collected = 0;
+        this.move_tokens = 0;
         this.living = true;
         this.anatomy = new Anatomy(this)
         this.direction = Directions.down; // direction of movement
@@ -45,7 +46,7 @@ class Organism {
 
     // amount of food required before it can reproduce
     foodNeeded() {
-        return this.anatomy.is_mover ? this.anatomy.cells.length + Hyperparams.extraMoverFoodCost : this.anatomy.cells.length;
+        return this.anatomy.is_mover ? this.anatomy.cells.length + Hyperparams.extraMoverFoodCost * this.anatomy.mover_cells : this.anatomy.cells.length;
     }
 
     lifespan() {
@@ -231,7 +232,7 @@ class Organism {
     }
 
     isPassableCell(cell, parent){
-        return cell != null && (cell.state == CellStates.empty || cell.owner == this || cell.owner == parent || cell.state == CellStates.food);
+        return cell != null && (cell.state == CellStates.empty || cell.owner == this || cell.owner == parent || cell.state == CellStates.food || cell.state == CellStates.meat);
     }
 
     isClear(col, row, rotation=this.rotation) {
@@ -240,7 +241,7 @@ class Organism {
             if (cell==null) {
                 return false;
             }
-            if (cell.owner==this || cell.state==CellStates.empty || (!Hyperparams.foodBlocksReproduction && cell.state==CellStates.food)){
+            if (cell.owner==this || cell.state==CellStates.empty || (!Hyperparams.foodBlocksReproduction && (cell.state==CellStates.food || cell.state==CellStates.meat))){
                 continue;
             }
             return false;
@@ -259,7 +260,7 @@ class Organism {
         for (var cell of this.anatomy.cells) {
             var real_c = this.c + cell.rotatedCol(this.rotation);
             var real_r = this.r + cell.rotatedRow(this.rotation);
-            this.env.changeCell(real_c, real_r, CellStates.food, null);
+            this.env.changeCell(real_c, real_r, CellStates.meat, null);
         }
         this.species.decreasePop();
         this.living = false;
@@ -288,7 +289,9 @@ class Organism {
                 return this.living
         }
         
-        if (this.anatomy.is_mover) {
+        this.move_tokens += this.anatomy.mover_cells;
+        if (this.anatomy.is_mover && this.move_tokens > this.anatomy.cells.length) {
+            this.move_tokens -= this.anatomy.cells.length;
             this.move_count++;
             var changed_dir = false;
             if (this.ignore_brain_for == 0){

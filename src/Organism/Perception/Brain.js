@@ -40,7 +40,9 @@ class Brain {
             this.decisions[CellStates.food.name] = Decision.getRandom();
             this.decisions[CellStates.killer.name] = Decision.getRandom();
         }
+        this.decisions[CellStates.meat.name] = Decision.getRandom();
         this.decisions[CellStates.mouth.name] = Decision.getRandom();
+        this.decisions[CellStates.meatMouth.name] = Decision.getRandom();
         this.decisions[CellStates.producer.name] = Decision.getRandom();
         this.decisions[CellStates.mover.name] = Decision.getRandom();
         this.decisions[CellStates.armor.name] = Decision.getRandom();
