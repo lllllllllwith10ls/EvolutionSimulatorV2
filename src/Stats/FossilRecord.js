@@ -34,6 +34,16 @@ const FossilRecord = {
         return species;
     },
 
+    changeSpeciesName: function(species, new_name) {
+        if (this.extant_species[new_name]) {
+            console.warn('Tried to change species name to an existing species name. Change failed.');
+            return;
+        }
+        delete this.extant_species[species.name];
+        species.name = new_name;
+        this.extant_species[new_name] = species;
+    },
+
     numExtantSpecies() {return Object.values(this.extant_species).length},
     numExtinctSpecies() {return Object.values(this.extinct_species).length},
     speciesIsExtant(species_name) {return !!this.extant_species[species_name]},
@@ -119,6 +129,18 @@ const FossilRecord = {
         }
         this.av_cells.push(total_cells / total_org);
         this.av_cell_counts.push(cell_counts);
+    },
+
+    getMostPopulousSpecies(){
+        var max_pop = 0;
+        var max_species = undefined;
+        for (let s of Object.values(this.extant_species)) {
+            if (s.population > max_pop) {
+                max_pop = s.population;
+                max_species = s;
+            }
+        }
+        return max_species;
     },
 
     clear_record() {
