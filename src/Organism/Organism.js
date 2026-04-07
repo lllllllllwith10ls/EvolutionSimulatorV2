@@ -94,6 +94,7 @@ class Organism {
             }
             else {
                 mutated = org.mutate();
+                org.initAnatomy()
             }
         }
 

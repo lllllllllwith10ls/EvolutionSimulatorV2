@@ -16,7 +16,7 @@ const Hyperparams = {
         
         this.rotationEnabled = true;
 
-        this.foodBlocksReproduction = true;
+        this.foodBlocksReproduction = false;
         this.moversCanProduce = true;
 
         this.instaKill = false;

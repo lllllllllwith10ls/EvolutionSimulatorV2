@@ -10,7 +10,7 @@ const min_render_speed = 60;
 class Engine {
     constructor(){
         this.fps = 60;
-        this.env = new WorldEnvironment(5);
+        this.env = new WorldEnvironment(2);
         this.organism_editor = new OrganismEditor();
         this.controlpanel = new ControlPanel(this);
         this.colorscheme = new ColorScheme(this.env, this.organism_editor);
