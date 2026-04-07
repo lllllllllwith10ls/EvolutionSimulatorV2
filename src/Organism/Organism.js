@@ -365,7 +365,9 @@ class Organism {
     loadRaw(org) {
         SerializeHelper.overwriteNonObjects(org, this);
         this.anatomy.loadRaw(org.anatomy)
-        this.current_anatomy.loadRaw(org.current_anatomy)
+        if (org.current_anatomy) {
+            this.current_anatomy.loadRaw(org.current_anatomy);
+        }
         if (org.brain)
             this.brain.copy(org.brain)
     }
