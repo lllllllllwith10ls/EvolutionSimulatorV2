@@ -86,6 +86,7 @@ class WorldEnvironment extends Environment{
     }
 
     addOrganism(organism) {
+        organism.initAnatomy();
         organism.updateGrid();
         this.total_mutability += organism.mutability;
         this.organisms.push(organism);
@@ -111,6 +112,9 @@ class WorldEnvironment extends Environment{
         this.renderer.addToRender(this.grid_map.cellAt(c, r));
         if(state == CellStates.wall)
             this.walls.push(this.grid_map.cellAt(c, r));
+        if (this.grid_map.cellAt(c, r) === null) {
+            console.log("aaaa")
+        }
     }
 
     clearWalls() {
@@ -224,6 +228,7 @@ class WorldEnvironment extends Environment{
             if (!s.anatomy) {
                 //if the species doesn't have anatomy we need to initialize it
                 s.anatomy = org.anatomy;
+                s.initAnatomy();
                 s.calcAnatomyDetails();
             }
             s.name = orgRaw.species_name;

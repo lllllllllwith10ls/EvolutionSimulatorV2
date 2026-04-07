@@ -70,6 +70,7 @@ class OrganismEditor extends Environment{
         this.grid_map.fillGrid(CellStates.empty);
         var center = this.grid_map.getCenter();
         this.organism = new Organism(center[0], center[1], this, orig_org);
+        this.organism.initAnatomy();
         this.organism.updateGrid();
         this.controller.updateDetails();
     }
@@ -88,6 +89,7 @@ class OrganismEditor extends Environment{
         var center = this.grid_map.getCenter();
         this.organism = new Organism(center[0], center[1], this, null);
         this.organism.anatomy.addDefaultCell(CellStates.mouth, 0, 0);
+        this.organism.initAnatomy();
         this.organism.updateGrid();
         this.organism.species = new Species(this.organism.anatomy, null, 0);
     }
@@ -96,6 +98,7 @@ class OrganismEditor extends Environment{
         this.grid_map.fillGrid(CellStates.empty);
 
         this.organism = RandomOrganismGenerator.generate(this);
+        this.organism.initAnatomy();
         this.organism.updateGrid();
         this.organism.species = new Species(this.organism.anatomy, null, 0);
     }

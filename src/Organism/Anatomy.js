@@ -15,6 +15,7 @@ class Anatomy {
         this.is_mover = false;
         this.mover_cells = 0;
         this.has_eyes = false;
+        this.weight = 0;
     }
 
     canAddCellAt(c, r) {
@@ -94,6 +95,7 @@ class Anatomy {
             }
             if (cell.state == CellStates.eye)
                 this.has_eyes = true;
+            this.weight += cell.state.weight;
         }
     }
 

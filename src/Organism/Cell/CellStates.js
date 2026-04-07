@@ -3,6 +3,7 @@ class CellState{
     constructor(name) {
         this.name = name;
         this.color = 'black';
+        this.weight = 1;
     }
 
     render(ctx, cell, size) {
@@ -44,6 +45,7 @@ class MeatMouth extends CellState {
 class Producer extends CellState {
     constructor() {
         super('producer');
+        this.weight = 5;
     }
 }
 class Mover extends CellState {

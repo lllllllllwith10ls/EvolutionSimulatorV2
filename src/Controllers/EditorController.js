@@ -148,6 +148,7 @@ class EditorController extends CanvasController{
     loadOrg(org) {
         this.env.clear();
         this.env.organism.loadRaw(org);
+        this.env.organism.initAnatomy();
         this.refreshDetailsPanel();
         this.env.organism.updateGrid();
         this.env.renderFull();

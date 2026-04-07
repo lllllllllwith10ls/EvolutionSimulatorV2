@@ -2,7 +2,7 @@ const CellStates = require("../CellStates");
 const BodyCell = require("./BodyCell");
 const Hyperparams = require("../../../Hyperparameters");
 
-class MouthCell extends BodyCell{
+class MeatMouthCell extends BodyCell{
     constructor(org, loc_col, loc_row){
         super(CellStates.meatMouth, org, loc_col, loc_row);
     }
@@ -27,4 +27,4 @@ class MouthCell extends BodyCell{
     }
 }
 
-module.exports = MouthCell;
+module.exports = MeatMouthCell;

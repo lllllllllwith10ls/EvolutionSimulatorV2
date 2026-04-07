@@ -89,12 +89,12 @@ class GridMap {
         grid.walls = [];
         for (let col of this.grid) {
             for (let cell of col) {
-                if (cell.state===CellStates.wall || cell.state===CellStates.food){
+                if (cell.state===CellStates.wall || cell.state===CellStates.food || cell.state===CellStates.meat){
                     let c = {c: cell.col, r: cell.row}; // no need to store state
                     if (cell.state===CellStates.food)
                         grid.food.push(c)
                     else if (cell.state===CellStates.meat)
-                        grid.food.push(c)
+                        grid.meat.push(c)
                     else
                         grid.walls.push(c)
                 }

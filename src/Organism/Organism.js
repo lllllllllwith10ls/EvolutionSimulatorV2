@@ -16,7 +16,8 @@ class Organism {
         this.food_collected = 0;
         this.move_tokens = 0;
         this.living = true;
-        this.anatomy = new Anatomy(this)
+        this.anatomy = new Anatomy(this);
+        this.current_anatomy = new Anatomy(this);
         this.direction = Directions.down; // direction of movement
         this.rotation = Directions.up; // direction of rotation
         this.can_rotate = Hyperparams.rotationEnabled;
@@ -28,6 +29,7 @@ class Organism {
         this.brain = new Brain(this);
         if (parent != null) {
             this.inherit(parent);
+            this.initAnatomy();
         }
     }
 
@@ -54,7 +56,7 @@ class Organism {
     }
 
     maxHealth() {
-        return this.anatomy.cells.length;
+        return this.current_anatomy.cells.length;
     }
 
     reproduce() {
@@ -162,7 +164,7 @@ class Organism {
         var new_c = this.c + direction_c;
         var new_r = this.r + direction_r;
         if (this.isClear(new_c, new_r)) {
-            for (var cell of this.anatomy.cells) {
+            for (var cell of this.current_anatomy.cells) {
                 var real_c = this.c + cell.rotatedCol(this.rotation);
                 var real_r = this.r + cell.rotatedRow(this.rotation);
                 this.env.changeCell(real_c, real_r, CellStates.empty, null);
@@ -183,7 +185,7 @@ class Organism {
         }
         var new_rotation = Directions.getRandomDirection();
         if(this.isClear(this.c, this.r, new_rotation)){
-            for (var cell of this.anatomy.cells) {
+            for (var cell of this.current_anatomy.cells) {
                 var real_c = this.c + cell.rotatedCol(this.rotation);
                 var real_r = this.r + cell.rotatedRow(this.rotation);
                 this.env.changeCell(real_c, real_r, CellStates.empty, null);
@@ -239,7 +241,7 @@ class Organism {
     }
 
     isClear(col, row, rotation=this.rotation) {
-        for(var loccell of this.anatomy.cells) {
+        for(var loccell of this.current_anatomy.cells) {
             var cell = this.getRealCell(loccell, col, row, rotation);
             if (cell==null) {
                 return false;
@@ -260,7 +262,7 @@ class Organism {
     }
 
     die() {
-        for (var cell of this.anatomy.cells) {
+        for (var cell of this.current_anatomy.cells) {
             var real_c = this.c + cell.rotatedCol(this.rotation);
             var real_r = this.r + cell.rotatedRow(this.rotation);
             this.env.changeCell(real_c, real_r, CellStates.meat, null);
@@ -270,11 +272,18 @@ class Organism {
     }
 
     updateGrid() {
-        for (var cell of this.anatomy.cells) {
+        for (var cell of this.current_anatomy.cells) {
             var real_c = this.c + cell.rotatedCol(this.rotation);
             var real_r = this.r + cell.rotatedRow(this.rotation);
             this.env.changeCell(real_c, real_r, cell.state, cell);
         }
+    }
+
+    initAnatomy() {
+        for (var c of this.anatomy.cells) {
+            this.current_anatomy.addInheritCell(c);
+        }
+        this.current_anatomy.checkTypeChange();
     }
 
     update() {
@@ -286,15 +295,15 @@ class Organism {
         if (this.food_collected >= this.foodNeeded()) {
             this.reproduce();
         }
-        for (var cell of this.anatomy.cells) {
+        for (var cell of this.current_anatomy.cells) {
             cell.performFunction();
             if (!this.living)
                 return this.living
         }
         
-        this.move_tokens += this.anatomy.mover_cells;
-        if (this.anatomy.is_mover && this.move_tokens > this.anatomy.cells.length) {
-            this.move_tokens -= this.anatomy.cells.length;
+        this.move_tokens += this.current_anatomy.mover_cells;
+        if (this.current_anatomy.is_mover && this.move_tokens > this.current_anatomy.weight) {
+            this.move_tokens -= this.current_anatomy.weight;
             this.move_count++;
             var changed_dir = false;
             if (this.ignore_brain_for == 0){
@@ -345,6 +354,7 @@ class Organism {
     serialize() {
         let org = SerializeHelper.copyNonObjects(this);
         org.anatomy = this.anatomy.serialize();
+        org.current_anatomy = this.current_anatomy.serialize();
         if (this.anatomy.is_mover && this.anatomy.has_eyes)
             org.brain = this.brain.serialize();
         org.species_name = this.species.name;
@@ -354,6 +364,7 @@ class Organism {
     loadRaw(org) {
         SerializeHelper.overwriteNonObjects(org, this);
         this.anatomy.loadRaw(org.anatomy)
+        this.current_anatomy.loadRaw(org.current_anatomy)
         if (org.brain)
             this.brain.copy(org.brain)
     }
